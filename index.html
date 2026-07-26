@@ -69,43 +69,43 @@
 
         /* 計算結果表示枠（カメラの下） */
         .result-display {
-            flex: 1; min-height: 60px;
+            flex: 1; min-height: 80px;
             background: #06030a; border: 1.5px solid #b57cff; border-radius: 6px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 4px; gap: 2px;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+            padding: 6px 8px; gap: 2px;
         }
-        .result-display .res-title { font-size: 0.55rem; color: #b57cff; }
-        .result-display .res-num { font-size: 2rem; font-weight: bold; color: #ff007f; text-shadow: 0 0 8px #ff007f; line-height: 1; }
+        .result-display .res-formula { font-size: 0.85rem; color: #ffffff; line-height: 1.1; min-height: 1em; opacity: 0.85; text-align: center; }
+        .result-display .res-num { font-size: 3.4rem; font-weight: bold; color: #ff007f; text-shadow: 0 0 10px #ff007f; line-height: 1; }
 
         /* 右カラム: スロット + 計算ボタン + 電卓 */
         .right-column { flex: 1 1 45%; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 
         .section-title { font-size: 0.6rem; font-weight: bold; color: #b57cff; margin: 0; }
 
-        /* スロット（大型化） */
-        .slots-container { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; flex-shrink: 0; }
+        /* スロット（大型化・2x2） */
+        .slots-container { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; flex-shrink: 0; }
         .slot-box {
-            background: #150f24; border: 1.5px solid rgba(181,124,255,0.4); border-radius: 6px;
-            padding: 6px 2px; text-align: center; display: flex; flex-direction: column;
+            background: #150f24; border: 1.5px solid rgba(181,124,255,0.4); border-radius: 8px;
+            padding: 10px 4px; text-align: center; display: flex; flex-direction: column;
             cursor: pointer; user-select: none; transition: border-color 0.15s, background 0.15s;
-            min-height: 64px; justify-content: center;
+            min-height: 92px; justify-content: center;
         }
         .slot-box.selected { border: 1.5px solid #ff007f; background: #2b0c1e; }
-        .slot-box .label { font-size: 0.6rem; color: #b57cff; pointer-events: none; }
+        .slot-box .label { font-size: 0.7rem; color: #b57cff; pointer-events: none; }
         .slot-box.selected .label { color: #ff007f; }
-        .slot-box .kanji-display { font-size: 1.5rem; color: #fff; font-weight: bold; line-height: 1.2; pointer-events: none; }
-        .slot-box .page-output { font-size: 0.95rem; font-weight: bold; color: #00ff64; pointer-events: none; }
+        .slot-box .kanji-display { font-size: 2.2rem; color: #fff; font-weight: bold; line-height: 1.2; pointer-events: none; }
+        .slot-box .page-output { font-size: 1.2rem; font-weight: bold; color: #00ff64; pointer-events: none; }
 
         /* 計算ボタン群（スロットの下） */
-        .calc-buttons { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; flex-shrink: 0; }
+        .calc-buttons { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; flex-shrink: 0; }
         .btn-calc {
             background: #2b124c; border: 1.5px solid #ff007f; color: #ff007f;
-            font-size: 0.7rem; font-weight: bold; border-radius: 5px; cursor: pointer;
+            font-size: 0.85rem; font-weight: bold; border-radius: 6px; cursor: pointer;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 8px 2px; min-height: 48px; line-height: 1.3; gap: 2px;
+            padding: 10px 2px; min-height: 60px; line-height: 1.3; gap: 3px;
         }
         .btn-calc:active { background: #ff007f; color: #000; }
-        .btn-calc .ico { font-size: 0.9rem; }
+        .btn-calc .ico { font-size: 1.1rem; }
 
         /* 電卓（右側） */
         .calc-section { display: flex; flex-direction: column; gap: 4px; flex: 1; min-height: 0; }
@@ -165,11 +165,11 @@
         }
         .btn-manual-submit:active { background: #00ff64; color: #000; }
 
-        .reset-container { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; flex-shrink: 0; }
+        .reset-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex-shrink: 0; margin-top: 4px; }
         .btn-reset-half {
             background: #3a1525; border: 1px solid #ff3388; color: #ff99cc;
-            font-size: 0.7rem; font-weight: bold; border-radius: 5px; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; height: 34px;
+            font-size: 0.8rem; font-weight: bold; border-radius: 6px; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; height: 44px;
         }
         .btn-reset-half:active { background: #ff3388; color: #fff; }
 
@@ -190,17 +190,17 @@
 
         /* ═══ スキャンボタン（画面右下・大型FAB） ═══ */
         .btn-shutter-fab {
-            position: fixed; bottom: 16px; right: 16px; z-index: 50;
-            width: 76px; height: 76px; border-radius: 50%;
+            position: fixed; bottom: 20px; right: 20px; z-index: 50;
+            width: 100px; height: 100px; border-radius: 50%;
             background: radial-gradient(circle at 35% 35%, #ff007f 0%, #5500aa 80%);
-            color: #fff; border: 3px solid #ebd6ff; font-size: 0.7rem; font-weight: bold;
+            color: #fff; border: 4px solid #ebd6ff; font-size: 0.85rem; font-weight: bold;
             cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            gap: 2px; box-shadow: 0 4px 16px rgba(255,0,127,0.5); line-height: 1.1;
+            gap: 3px; box-shadow: 0 6px 20px rgba(255,0,127,0.6); line-height: 1.1;
             transition: transform 0.1s;
         }
         .btn-shutter-fab:active { transform: scale(0.92); }
         .btn-shutter-fab:disabled { opacity: 0.5; }
-        .btn-shutter-fab .fab-ico { font-size: 1.6rem; line-height: 1; }
+        .btn-shutter-fab .fab-ico { font-size: 2.1rem; line-height: 1; }
 
         /* 縦画面対応 */
         @media (max-aspect-ratio: 13/10) {
@@ -245,7 +245,7 @@
                     <div class="loading-dimmer" id="scan-indicator"></div>
                 </div>
                 <div class="result-display">
-                    <div class="res-title">ANS</div>
+                    <div class="res-formula" id="calc-formula">　</div>
                     <div class="res-num" id="calc-result">000</div>
                 </div>
             </div>
@@ -299,7 +299,7 @@
 
                 <div class="calc-section">
                     <button class="btn-calc-toggle" id="calc-toggle-btn">電卓を開く / 閉じる</button>
-                    <div class="calc-panel" id="calc-panel">
+                    <div class="calc-panel" id="calc-panel" style="display:none;">
                         <div class="mod-selector-overlay" id="mod-overlay">
                             <div class="mod-selector-title">最大ページ数を何で割る？</div>
                             <div class="mod-grid">
@@ -609,27 +609,33 @@
         }
 
         window.calculate = function(type) {
+            const resEl = document.getElementById('calc-result');
             let allPages = [];
             for (let i = 0; i < 4; i++) {
                 const pVal = parseInt(outputs[i].innerText);
                 if (!isNaN(pVal)) allPages.push(pVal);
             }
             if (type === 'double') {
-                if (allPages.length === 0) { document.getElementById('calc-result').innerText = "ERR"; return; }
-                document.getElementById('calc-result').innerText = Math.max(...allPages) * 2;
+                if (allPages.length === 0) { resEl.innerText = "ERR"; setFormula(""); return; }
+                const mx = Math.max(...allPages);
+                resEl.innerText = mx * 2;
+                setFormula(mx + ' × 2');
                 clearAllSelections(); return;
             }
             if (type === 'sort_digits') {
-                if (allPages.length === 0) { document.getElementById('calc-result').innerText = "ERR"; return; }
+                if (allPages.length === 0) { resEl.innerText = "ERR"; setFormula(""); return; }
                 allPages.sort((a, b) => b - a);
                 let combinedResult = "";
                 allPages.forEach(p => { combinedResult += (p % 10).toString(); });
-                document.getElementById('calc-result').innerText = combinedResult;
+                resEl.innerText = combinedResult;
+                setFormula(allPages.join(' > ') + ' の下一桁');
                 clearAllSelections(); return;
             }
             if (type === 'sub') {
-                if (allPages.length < 1) { document.getElementById('calc-result').innerText = "ERR"; return; }
-                document.getElementById('calc-result').innerText = Math.max(...allPages) - Math.min(...allPages);
+                if (allPages.length < 1) { resEl.innerText = "ERR"; setFormula(""); return; }
+                const mx = Math.max(...allPages), mn = Math.min(...allPages);
+                resEl.innerText = mx - mn;
+                setFormula(mx + ' − ' + mn);
                 clearAllSelections(); return;
             }
             if (type === 'rem') {
@@ -643,10 +649,11 @@
                 if (!isNaN(pVal)) pages.push(pVal);
             });
             if (pages.length === 0 && type === 'add') pages = [...allPages];
-            if (pages.length === 0) { document.getElementById('calc-result').innerText = "ERR"; return; }
+            if (pages.length === 0) { resEl.innerText = "ERR"; setFormula(""); return; }
             let result = 0;
             if (type === 'add') result = pages.reduce((a, b) => a + b, 0);
-            document.getElementById('calc-result').innerText = result;
+            resEl.innerText = result;
+            setFormula(pages.join(' + '));
             clearAllSelections();
         }
 
@@ -657,7 +664,9 @@
                 if (!isNaN(pVal)) allPages.push(pVal);
             }
             if (allPages.length === 0) { closeModOverlay(); return; }
-            document.getElementById('calc-result').innerText = Math.max(...allPages) % divisor;
+            const mx = Math.max(...allPages);
+            document.getElementById('calc-result').innerText = mx % divisor;
+            setFormula(mx + ' ÷ ' + divisor + ' の余り');
             closeModOverlay(); clearAllSelections();
         }
 
@@ -672,11 +681,14 @@
 
         function clearResultOnly() {
             document.getElementById('calc-result').innerText = "000";
+            setFormula("　");
             closeModOverlay();
         }
 
         let calcCurrent = "0", calcPrevious = null, calcOperator = null, calcShouldReset = false;
-        function toggleCalcPanel() { document.getElementById('calc-panel').style.display = (document.getElementById('calc-panel').style.display === 'none' || !document.getElementById('calc-panel').style.display) ? 'flex' : 'none'; }
+        function toggleCalcPanel() { const p = document.getElementById('calc-panel'); p.style.display = (p.style.display === 'flex') ? 'none' : 'flex'; }
+
+        function setFormula(text) { document.getElementById('calc-formula').innerText = text; }
 
         window.calcKey = function(key) {
             const display = document.getElementById('calc-display');
