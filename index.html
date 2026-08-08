@@ -97,29 +97,35 @@
         /* 計算結果表示 */
         .result-display {
             width: 100%;
+            min-height: 92px;
             background: #06030a;
-            border: 2px solid #b57cff;
-            border-radius: 8px;
-            padding: 6px 8px;
+            border: 3px solid #b57cff;
+            border-radius: 10px;
+            padding: 8px 10px;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
-            gap: 2px;
+            gap: 4px;
+            box-shadow: 0 0 10px rgba(181, 124, 255, 0.22);
         }
         .result-display .res-title {
-            font-size: 0.6rem;
+            font-size: 0.72rem;
             color: #b57cff;
-            line-height: 0.8rem;
+            line-height: 1rem;
         }
         .result-display .res-num {
-            font-size: 1.6rem;
+            width: 100%;
+            font-size: clamp(2rem, 5vw, 3.4rem);
             font-weight: bold;
             color: #ff007f;
-            text-shadow: 0 0 6px #ff007f;
-            line-height: 1.5rem;
+            text-shadow: 0 0 8px #ff007f;
+            line-height: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         /* 電卓パネル */
@@ -135,49 +141,52 @@
             z-index: 30;
             flex-direction: column;
             padding: 8px;
-            gap: 6px;
+            gap: 10px;
         }
         .calc-panel-overlay.active { display: flex; }
         .calc-display {
             background: #06030a;
-            border: 1px solid #b57cff;
-            border-radius: 6px;
-            padding: 8px 12px;
+            border: 2px solid #b57cff;
+            border-radius: 8px;
+            padding: 10px 12px;
             text-align: right;
-            font-size: 1.6rem;
+            font-size: clamp(2rem, 6vw, 3.2rem);
             font-weight: bold;
             color: #00ff64;
-            min-height: 48px;
-            margin-bottom: 4px;
+            min-height: 72px;
+            line-height: 1;
+            margin-bottom: 2px;
             overflow: hidden;
             white-space: nowrap;
+            box-shadow: inset 0 0 12px rgba(0, 255, 100, 0.08);
         }
         .calc-keypad {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-rows: repeat(5, minmax(0, 1fr));
+            gap: 8px;
             flex: 1;
             min-height: 0;
         }
         .btn-calc-key {
-            background: #1d0e30;
-            border: 1px solid #b57cff;
-            color: #ebd6ff;
-            font-size: 1.2rem;
+            background: #262626;
+            border: 1px solid #5d5d5d;
+            color: #ffffff;
+            font-size: clamp(1.25rem, 4vw, 2rem);
             font-weight: bold;
-            border-radius: 6px;
+            border-radius: 14px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .btn-calc-key:active { background: #b57cff; color: #000; }
-        .btn-calc-key.op { background: #2b124c; border-color: #ff007f; color: #ff007f; }
-        .btn-calc-key.op:active { background: #ff007f; color: #000; }
-        .btn-calc-key.eq { background: #3a1525; border-color: #ff3388; color: #ff99cc; }
-        .btn-calc-key.eq:active { background: #ff3388; color: #fff; }
-        .btn-calc-key.cl { background: #3a1525; border-color: #ff3388; color: #ff99cc; font-size: 1rem; }
-        .btn-calc-key.cl:active { background: #ff3388; color: #fff; }
+        .btn-calc-key:active { background: #777; color: #000; }
+        .btn-calc-key.op { background: #f59d27; border-color: #f7b456; color: #ffffff; }
+        .btn-calc-key.op:active { background: #ffd08a; color: #000; }
+        .btn-calc-key.eq { background: #f59d27; border-color: #f7b456; color: #ffffff; }
+        .btn-calc-key.eq:active { background: #ffd08a; color: #000; }
+        .btn-calc-key.cl { background: #686868; border-color: #858585; color: #ffffff; font-size: clamp(1rem, 3vw, 1.6rem); }
+        .btn-calc-key.cl:active { background: #aaa; color: #000; }
         .btn-calc-close {
             background: #333;
             border: none;
@@ -192,7 +201,8 @@
 
         /* 電卓トグル */
         .btn-calc-toggle {
-            height: 40px;
+            height: 48px;
+            margin-top: 8px;
             background: #1a0d2e;
             color: #b57cff;
             border: 2px solid rgba(181, 124, 255, 0.6);
@@ -298,7 +308,7 @@
             background: #2b124c;
             border: 2px solid #ff007f;
             color: #ff007f;
-            font-size: 0.8rem;
+            font-size: clamp(1.15rem, 3vw, 1.8rem);
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
@@ -312,33 +322,34 @@
         /* クリアボタン */
         .reset-container {
             display: grid;
-            grid-template-columns: 1fr 3fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 8px;
             flex-shrink: 0;
         }
         .btn-reset-half {
+            width: 100%;
             background: #3a1525;
             border: 2px solid #ff3388;
             color: #ff99cc;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            aspect-ratio: 1 / 3;
+            aspect-ratio: 3 / 1;
         }
         .btn-reset-half:active { background: #ff3388; color: #fff; }
 
         /* スキャン丸ボタン */
         .scan-button-area {
-            flex: 1;
             display: flex;
             justify-content: flex-end;
             align-items: flex-end;
-            min-height: 0;
-            padding-bottom: 4px;
+            flex: 0 0 auto;
+            margin-top: auto;
+            padding: 8px 0 2px;
         }
         .btn-scan-circle {
             width: 72px;
@@ -462,11 +473,11 @@
                         <button class="btn-calc-key" onclick="calcKey('4')">4</button>
                         <button class="btn-calc-key" onclick="calcKey('5')">5</button>
                         <button class="btn-calc-key" onclick="calcKey('6')">6</button>
-                        <button class="btn-calc-key eq" onclick="calcKey('=')" style="grid-row: span 4;">＝</button>
+                        <button class="btn-calc-key eq" onclick="calcKey('=')" style="grid-column: 4; grid-row: 3 / span 3;">＝</button>
                         <button class="btn-calc-key" onclick="calcKey('1')">1</button>
                         <button class="btn-calc-key" onclick="calcKey('2')">2</button>
                         <button class="btn-calc-key" onclick="calcKey('3')">3</button>
-                        <button class="btn-calc-key" onclick="calcKey('0')" style="grid-column: span 2;">0</button>
+                        <button class="btn-calc-key" onclick="calcKey('0')" style="grid-column: span 3;">0</button>
                     </div>
                     <button class="btn-calc-close" onclick="closeCalcPanel()">閉じる</button>
                 </div>
@@ -512,17 +523,17 @@
 
                 <!-- 計算ボタン -->
                 <div class="calc-buttons">
-                    <button class="btn-calc" onclick="calculate('add')">➕ 足</button>
-                    <button class="btn-calc" onclick="calculate('sub')">➖ 引</button>
-                    <button class="btn-calc" onclick="calculate('double')">✖2 倍</button>
-                    <button class="btn-calc" onclick="calculate('rem')">剰 余</button>
-                    <button class="btn-calc" onclick="calculate('sort_digits')">🔁 替</button>
+                    <button class="btn-calc" aria-label="足し算" onclick="calculate('add')">＋</button>
+                    <button class="btn-calc" aria-label="引き算" onclick="calculate('sub')">−</button>
+                    <button class="btn-calc" aria-label="最大値を2倍" onclick="calculate('double')">倍</button>
+                    <button class="btn-calc" aria-label="余り" onclick="calculate('rem')">余</button>
+                    <button class="btn-calc" aria-label="末尾数字の並べ替え" onclick="calculate('sort_digits')">🔁</button>
                 </div>
 
                 <!-- クリアボタン -->
                 <div class="reset-container">
                     <button class="btn-reset-half" id="btn-clear-slots">ｸﾘｱ</button>
-                    <button class="btn-reset-half" id="btn-clear-result">結果クリア</button>
+                    <button class="btn-reset-half" id="btn-clear-result">結果</button>
                 </div>
 
                 <!-- 余りセレクターオーバーレイ -->
