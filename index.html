@@ -97,6 +97,7 @@
             height: 100vh;
             height: 100dvh;
             gap: 6px;
+            overflow: hidden;
         }
         .app-wrapper.active { display: flex; }
 
@@ -130,14 +131,18 @@
         /* メインレイアウト */
         .main-layout {
             display: flex;
-            flex: 1;
+            flex: 1 1 auto;
             gap: 8px;
             min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            align-items: flex-start;
         }
 
         /* --- 左カラム: カメラ & 結果 & 電卓 --- */
         .left-column {
-            flex: 40;
+            flex: 40 0 0;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -281,7 +286,7 @@
 
         /* --- 右カラム --- */
         .right-column {
-            flex: 60;
+            flex: 60 0 0;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -432,6 +437,45 @@
             box-shadow: 0 0 12px rgba(181, 124, 255, 0.4);
         }
         .btn-scan-circle:active { background: #00ff64; color: #000; }
+
+        /* --- 短い画面向けレスポンシブ調整 --- */
+        @media (max-width: 720px) {
+            .app-wrapper { overflow: hidden; }
+            .main-layout {
+                flex-direction: column;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            .left-column,
+            .right-column {
+                width: 100%;
+                flex: 0 0 auto;
+            }
+            .camera-container {
+                aspect-ratio: 16 / 9;
+                max-height: 42vh;
+            }
+            .btn-calc-toggle { margin-top: 0; }
+        }
+
+        @media (max-height: 1000px) and (min-width: 721px) {
+            .camera-container { max-height: 30vh; }
+            .result-display { min-height: 76px; }
+            .slot-box { min-height: 56px; padding: 4px 3px; }
+            .slot-box .kanji-display { font-size: 1.5rem; line-height: 1.6rem; min-height: 1.6rem; }
+            .slot-box .page-output { font-size: 0.85rem; }
+            .suggest-container { min-height: 34px; padding: 4px 6px; }
+            .btn-calc { font-size: clamp(1rem, 2.5vw, 1.45rem); }
+            .btn-reset-half { font-size: clamp(0.95rem, 2.5vw, 1.35rem); }
+            .btn-scan-circle { height: 52px; font-size: 1.05rem; }
+            .scan-button-area {
+                position: sticky;
+                bottom: 0;
+                padding: 6px 0 2px;
+                background: #0c0714;
+                z-index: 25;
+            }
+        }
 
         /* 余りセレクターオーバーレイ */
         .mod-selector-overlay {
