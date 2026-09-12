@@ -451,11 +451,30 @@
         @media (orientation: landscape) and (min-width: 721px) {
             .app-wrapper { gap: 4px; padding: 4px; }
             .top-bar { height: 24px; }
-            .main-layout { gap: 6px; overflow: hidden; height: calc(100dvh - 34px); }
-            .left-column, .right-column { gap: 5px; height: 100%; }
-            .camera-container { aspect-ratio: auto; max-height: none; flex: 1 1 auto; min-height: 0; }
-            .result-display { min-height: 64px; padding: 4px 8px; gap: 2px; }
-            .result-display .res-num { font-size: clamp(1.8rem, 5vw, 2.8rem); }
+            .main-layout {
+                flex: 1 1 0;
+                min-height: 0;
+                gap: 6px;
+                overflow: hidden;
+                height: auto;
+                align-items: stretch;
+            }
+            .left-column, .right-column {
+                gap: 5px;
+                height: 100%;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+            }
+            .camera-container { aspect-ratio: auto; max-height: 30vh; height: 30vh; flex: 0 0 auto; }
+            .result-display {
+                flex: 1 1 auto;
+                min-height: 120px;
+                padding: 12px 10px;
+                gap: 8px;
+            }
+            .result-display .res-title { font-size: clamp(0.9rem, 2vw, 1.2rem); }
+            .result-display .res-num { font-size: clamp(3.2rem, 8vw, 6rem); }
             .btn-calc-toggle { aspect-ratio: auto; height: 54px; margin-top: 0; }
             .slot-box { min-height: 52px; padding: 4px 3px; }
             .slot-box .kanji-display { font-size: 1.45rem; line-height: 1.5rem; min-height: 1.5rem; }
@@ -465,7 +484,9 @@
             .btn-calc { font-size: clamp(0.95rem, 2.5vw, 1.45rem); }
             .btn-reset-half { font-size: clamp(0.95rem, 2.5vw, 1.35rem); }
             .btn-scan-circle { height: 52px; font-size: 1.05rem; }
-            .scan-button-area { padding: 2px 0; }
+            .scan-button-area { padding: 2px 0; margin-top: auto; }
+            .slot-box { min-height: 60px; }
+            .btn-fallback-kanji { min-height: 72px; }
         }
 
         /* --- 短い画面向けレスポンシブ調整 --- */
@@ -491,8 +512,12 @@
         }
 
         @media (max-height: 1000px) and (min-width: 721px) and (orientation: landscape) {
-            .camera-container { max-height: 30vh; }
-            .result-display { min-height: 76px; }
+            .camera-container { max-height: 26vh; height: 26vh; }
+            .result-display {
+                flex: 1 1 auto;
+                min-height: 120px;
+            }
+            .result-display .res-num { font-size: clamp(3.2rem, 8vw, 6rem); }
             .slot-box { min-height: 56px; padding: 4px 3px; }
             .slot-box .kanji-display { font-size: 1.5rem; line-height: 1.6rem; min-height: 1.6rem; }
             .slot-box .page-output { font-size: 0.85rem; }
