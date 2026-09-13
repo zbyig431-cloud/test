@@ -196,92 +196,6 @@
             text-overflow: ellipsis;
         }
 
-        /* 電卓パネル */
-        .calc-panel-overlay {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(12, 7, 20, 0.98);
-            border-radius: 6px;
-            z-index: 30;
-            flex-direction: column;
-            padding: 8px;
-            gap: 10px;
-        }
-        .calc-panel-overlay.active { display: flex; }
-        .calc-display {
-            background: #06030a;
-            border: 2px solid #b57cff;
-            border-radius: 8px;
-            padding: 10px 12px;
-            text-align: right;
-            font-size: clamp(2rem, 6vw, 3.2rem);
-            font-weight: bold;
-            color: #00ff64;
-            min-height: 72px;
-            line-height: 1;
-            margin-bottom: 2px;
-            overflow: hidden;
-            white-space: nowrap;
-            box-shadow: inset 0 0 12px rgba(0, 255, 100, 0.08);
-        }
-        .calc-keypad {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            grid-template-rows: repeat(5, minmax(0, 1fr));
-            gap: 8px;
-            flex: 1;
-            min-height: 0;
-        }
-        .btn-calc-key {
-            background: #262626;
-            border: 1px solid #5d5d5d;
-            color: #ffffff;
-            font-size: clamp(1.25rem, 4vw, 2rem);
-            font-weight: bold;
-            border-radius: 14px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .btn-calc-key:active { background: #777; color: #000; }
-        .btn-calc-key.op { background: #f59d27; border-color: #f7b456; color: #ffffff; }
-        .btn-calc-key.op:active { background: #ffd08a; color: #000; }
-        .btn-calc-key.eq { background: #f59d27; border-color: #f7b456; color: #ffffff; }
-        .btn-calc-key.eq:active { background: #ffd08a; color: #000; }
-        .btn-calc-key.cl { background: #686868; border-color: #858585; color: #ffffff; font-size: clamp(1rem, 3vw, 1.6rem); }
-        .btn-calc-key.cl:active { background: #aaa; color: #000; }
-        .btn-calc-close {
-            background: #333;
-            border: none;
-            color: #aaa;
-            padding: 8px;
-            font-size: 0.8rem;
-            border-radius: 6px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .btn-calc-close:active { background: #555; color: #fff; }
-
-        /* 電卓トグル */
-        .btn-calc-toggle {
-            width: 100%;
-            background: #1a0d2e;
-            color: #b57cff;
-            border: 2px solid rgba(181, 124, 255, 0.6);
-            font-size: clamp(1.15rem, 3vw, 1.8rem);
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            flex-shrink: 0;
-            aspect-ratio: 3 / 1;
-        }
-        .btn-calc-toggle:active { background: #b57cff; color: #000; }
-
         /* --- 右カラム --- */
         .right-column {
             flex: 60 0 0;
@@ -474,7 +388,6 @@
             }
             .result-display .res-title { font-size: clamp(0.9rem, 2vw, 1.2rem); }
             .result-display .res-num { font-size: clamp(3.2rem, 8vw, 6rem); }
-            .btn-calc-toggle { aspect-ratio: auto; height: 54px; margin-top: 0; }
             .slot-box { min-height: 52px; padding: 4px 3px; }
             .slot-box .kanji-display { font-size: 1.45rem; line-height: 1.5rem; min-height: 1.5rem; }
             .slot-box .page-output { font-size: 0.8rem; }
@@ -505,7 +418,6 @@
                 aspect-ratio: 16 / 9;
                 max-height: 42vh;
             }
-            .btn-calc-toggle { margin-top: 0; }
             .fallback-kanji-container { gap: 6px; }
             .btn-fallback-kanji { min-height: 72px; }
         }
@@ -797,8 +709,6 @@
             document.getElementById('shutter-trigger').addEventListener('click', captureAndScan);
             document.getElementById('btn-clear-slots').addEventListener('click', clearSlotsOnly);
             document.getElementById('btn-clear-result').addEventListener('click', clearResultOnly);
-            document.getElementById('calc-toggle-btn').addEventListener('click', toggleCalcPanel);
-
             document.getElementById('btn-goto-scan').addEventListener('click', () => {
                 const key = document.getElementById('api-key').value.trim();
                 if (!key) { alert('PASSを入力してください'); return; }
@@ -1147,97 +1057,6 @@
         }
 
         /* --- 電卓機能 --- */
-        let calcCurrent = "0";
-        let calcPrevious = null;
-        let calcOperator = null;
-        let calcShouldReset = false;
-
-        function toggleCalcPanel() {
-            const panel = document.getElementById('calc-panel-overlay');
-            panel.classList.toggle('active');
-        }
-
-        window.closeCalcPanel = function() {
-            document.getElementById('calc-panel-overlay').classList.remove('active');
-        }
-
-        let calcExpression = "0";
-
-        function updateCalcDisplay() {
-            const display = document.getElementById('calc-display');
-            if (calcOperator !== null && calcPrevious !== null) {
-                calcExpression = calcPrevious + " " + calcOperator + " " + calcCurrent;
-            } else {
-                calcExpression = calcCurrent;
-            }
-            display.innerText = calcExpression;
-        }
-
-        window.calcKey = function(key) {
-            const display = document.getElementById('calc-display');
-
-            if (key === 'exit') {
-                closeCalcPanel();
-                return;
-            }
-
-            if (key === 'C') {
-                calcCurrent = "0";
-                calcPrevious = null;
-                calcOperator = null;
-                calcShouldReset = false;
-                calcExpression = "0";
-                display.innerText = "0";
-                return;
-            }
-
-            if (key === '=') {
-                if (calcOperator !== null && calcPrevious !== null) {
-                    const a = parseFloat(calcPrevious);
-                    const b = parseFloat(calcCurrent);
-                    let result = 0;
-                    if (calcOperator === '+') result = a + b;
-                    else if (calcOperator === '−') result = a - b;
-                    else if (calcOperator === '×') result = a * b;
-                    else if (calcOperator === '÷') result = b !== 0 ? a / b : 0;
-                    calcCurrent = String(result);
-                    calcPrevious = null;
-                    calcOperator = null;
-                    calcShouldReset = true;
-                    calcExpression = calcCurrent;
-                    display.innerText = calcCurrent;
-                }
-                return;
-            }
-
-            if (key === '+' || key === '−' || key === '×' || key === '÷') {
-                if (calcOperator !== null && calcPrevious !== null && !calcShouldReset) {
-                    const a = parseFloat(calcPrevious);
-                    const b = parseFloat(calcCurrent);
-                    let result = 0;
-                    if (calcOperator === '+') result = a + b;
-                    else if (calcOperator === '−') result = a - b;
-                    else if (calcOperator === '×') result = a * b;
-                    else if (calcOperator === '÷') result = b !== 0 ? a / b : 0;
-                    calcCurrent = String(result);
-                }
-                calcPrevious = calcCurrent;
-                calcOperator = key;
-                calcShouldReset = true;
-                updateCalcDisplay();
-                return;
-            }
-
-            if (/[0-9]/.test(key)) {
-                if (calcCurrent === "0" || calcShouldReset) {
-                    calcCurrent = key;
-                    calcShouldReset = false;
-                } else {
-                    calcCurrent += key;
-                }
-                updateCalcDisplay();
-            }
-        }
     </script>
 </body>
 </html>
