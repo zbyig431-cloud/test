@@ -139,7 +139,7 @@
             align-items: flex-start;
         }
 
-        /* --- 左カラム: カメラ & 結果 & 電卓 --- */
+        /* --- 左カラム: カメラ --- */
         .left-column {
             flex: 40 0 0;
             display: flex;
@@ -161,40 +161,6 @@
             margin: 0 auto;
         }
         #camera-stream { width: 100%; height: 100%; object-fit: cover; }
-
-        /* 計算結果表示 */
-        .result-display {
-            width: 100%;
-            min-height: 92px;
-            background: #06030a;
-            border: 3px solid #b57cff;
-            border-radius: 10px;
-            padding: 8px 10px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            gap: 4px;
-            box-shadow: 0 0 10px rgba(181, 124, 255, 0.22);
-        }
-        .result-display .res-title {
-            font-size: 0.72rem;
-            color: #b57cff;
-            line-height: 1rem;
-        }
-        .result-display .res-num {
-            width: 100%;
-            font-size: clamp(2rem, 5vw, 3.4rem);
-            font-weight: bold;
-            color: #ff007f;
-            text-shadow: 0 0 8px #ff007f;
-            line-height: 1;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
 
         /* --- 右カラム --- */
         .right-column {
@@ -289,32 +255,10 @@
         .btn-fallback-kanji:active { background: #00ff64; color: #000; }
         .btn-fallback-kanji:active .page { color: #000; }
 
-        /* --- 計算ボタン --- */
-        .calc-buttons {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            flex-shrink: 0;
-        }
-        .btn-calc {
-            background: #2b124c;
-            border: 2px solid #ff007f;
-            color: #ff007f;
-            font-size: clamp(1.15rem, 3vw, 1.8rem);
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 1 / 1;
-        }
-        .btn-calc:active { background: #ff007f; color: #000; }
-
         /* クリアボタン */
         .reset-container {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: 1fr;
             gap: 8px;
             flex-shrink: 0;
         }
@@ -393,7 +337,6 @@
             .slot-box .page-output { font-size: 0.8rem; }
             .fallback-kanji-container { gap: 5px; }
             .btn-fallback-kanji { min-height: 64px; padding: 4px 2px; }
-            .btn-calc { font-size: clamp(0.95rem, 2.5vw, 1.45rem); }
             .btn-reset-half { font-size: clamp(0.95rem, 2.5vw, 1.35rem); }
             .btn-scan-circle { height: 52px; font-size: 1.05rem; }
             .scan-button-area { padding: 2px 0; }
@@ -436,52 +379,6 @@
             .btn-fallback-kanji { min-height: 60px; }
         }
 
-        /* 余りセレクターオーバーレイ */
-        .mod-selector-overlay {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(12, 7, 20, 0.96);
-            border-radius: 8px;
-            z-index: 20;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 8px;
-            gap: 8px;
-        }
-        .mod-selector-title {
-            font-size: 0.85rem;
-            color: #ff007f;
-            font-weight: bold;
-        }
-        .mod-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            width: 100%;
-        }
-        .btn-mod-num {
-            background: #1d0e30;
-            border: 2px solid #b57cff;
-            color: #00ff66;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            padding: 10px 0;
-        }
-        .btn-mod-num:active { background: #00ff66; color: #000; }
-        .btn-mod-cancel {
-            grid-column: span 5;
-            background: #333;
-            border: none;
-            color: #fff;
-            padding: 8px;
-            font-size: 0.85rem;
-            border-radius: 8px;
-        }
-
         .loading-dimmer {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(20, 5, 35, 0.5); z-index: 10; justify-content: center; align-items: center;
@@ -489,6 +386,17 @@
         }
         .loading-dimmer::after { content: "SCANNING KANJI..."; animation: blink 0.5s infinite alternate; }
         @keyframes blink { from { opacity: 0.3; } to { opacity: 1; } }
+
+        .btn-calc-toggle,
+        .calc-panel-overlay,
+        .calc-buttons,
+        .btn-calc,
+        .btn-calc-key,
+        .calc-display,
+        .calc-keypad,
+        .result-display,
+        .mod-selector-overlay,
+        #btn-clear-result { display: none !important; }
     </style>
   <meta property="og:image" content="https://bolt.new/static/og_default.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -517,53 +425,20 @@
 
         <div class="main-layout">
 
-            <!-- 左カラム: カメラ + 結果 + 電卓 -->
+            <!-- 左カラム: カメラ -->
             <div class="left-column">
                 <div class="camera-container">
                     <video id="camera-stream" autoplay playsinline muted></video>
                     <div class="loading-dimmer" id="scan-indicator"></div>
                 </div>
 
-                <!-- 計算結果表示 -->
-                <div class="result-display">
-                    <div class="res-title">ANS</div>
-                    <div class="res-num" id="calc-result">000</div>
-                </div>
-
-                <!-- 電卓トグル -->
-                <button class="btn-calc-toggle" id="calc-toggle-btn">電卓</button>
-
                 <!-- スキャン丸ボタン -->
                 <div class="scan-button-area">
                     <button class="btn-scan-circle" id="shutter-trigger">スキャン</button>
                 </div>
-
-                <!-- 電卓パネル -->
-                <div class="calc-panel-overlay" id="calc-panel-overlay">
-                    <div class="calc-display" id="calc-display">0</div>
-                    <div class="calc-keypad">
-                        <button class="btn-calc-key cl" onclick="calcKey('C')">C</button>
-                        <button class="btn-calc-key op" onclick="calcKey('÷')">÷</button>
-                        <button class="btn-calc-key op" onclick="calcKey('×')">×</button>
-                        <button class="btn-calc-key op" onclick="calcKey('−')">−</button>
-                        <button class="btn-calc-key" onclick="calcKey('7')">7</button>
-                        <button class="btn-calc-key" onclick="calcKey('8')">8</button>
-                        <button class="btn-calc-key" onclick="calcKey('9')">9</button>
-                        <button class="btn-calc-key op" onclick="calcKey('+')">+</button>
-                        <button class="btn-calc-key" onclick="calcKey('4')">4</button>
-                        <button class="btn-calc-key" onclick="calcKey('5')">5</button>
-                        <button class="btn-calc-key" onclick="calcKey('6')">6</button>
-                        <button class="btn-calc-key eq" onclick="calcKey('=')" style="grid-column: 4; grid-row: 3 / span 3;">＝</button>
-                        <button class="btn-calc-key" onclick="calcKey('1')">1</button>
-                        <button class="btn-calc-key" onclick="calcKey('2')">2</button>
-                        <button class="btn-calc-key" onclick="calcKey('3')">3</button>
-                        <button class="btn-calc-key cl" onclick="calcKey('exit')" style="font-size: 1.4rem;">🚪</button>
-                        <button class="btn-calc-key" onclick="calcKey('0')" style="grid-column: span 2;">0</button>
-                    </div>
-                </div>
             </div>
 
-            <!-- 右カラム: スロット + サジェスト + 計算ボタン + クリア + スキャン -->
+            <!-- 右カラム: スロット + サジェスト + クリア -->
             <div class="right-column">
 
                 <!-- スロット -->
@@ -609,36 +484,9 @@
                     </button>
                 </div>
 
-                <!-- 計算ボタン -->
-                <div class="calc-buttons">
-                    <button class="btn-calc" aria-label="足し算" onclick="calculate('add')">＋</button>
-                    <button class="btn-calc" aria-label="引き算" onclick="calculate('sub')">−</button>
-                    <button class="btn-calc" aria-label="最大値を2倍" onclick="calculate('double')">倍</button>
-                    <button class="btn-calc" aria-label="余り" onclick="calculate('rem')">余</button>
-                    <button class="btn-calc" aria-label="末尾数字の並べ替え" onclick="calculate('sort_digits')">🔁</button>
-                </div>
-
                 <!-- クリアボタン -->
                 <div class="reset-container">
                     <button class="btn-reset-half" id="btn-clear-slots">スロットクリア</button>
-                    <button class="btn-reset-half" id="btn-clear-result">結果クリア</button>
-                </div>
-
-                <!-- 余りセレクターオーバーレイ -->
-                <div class="mod-selector-overlay" id="mod-overlay">
-                    <div class="mod-selector-title">最大ページ数を何で割る？</div>
-                    <div class="mod-grid">
-                        <button class="btn-mod-num" onclick="execModCalculated(1)">1</button>
-                        <button class="btn-mod-num" onclick="execModCalculated(2)">2</button>
-                        <button class="btn-mod-num" onclick="execModCalculated(3)">3</button>
-                        <button class="btn-mod-num" onclick="execModCalculated(4)">4</button>
-                        <button class="btn-mod-num" onclick="execModCalculated(5)">5</button>
-                        <button class="btn-mod-num" onclick="execModCalculated(6)">6</button>
-                        <button class="btn-mod-num" onclick="execModCalculated(7)">7</button>
-                        <button class="btn-mod-num" onclick="execModCalculated(8)">8</button>
-                        <button class="btn-mod-num" onclick="execModCalculated(9)">9</button>
-                        <button class="btn-mod-cancel" onclick="closeModOverlay()">戻る</button>
-                    </div>
                 </div>
 
             </div>
@@ -698,6 +546,11 @@
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.btn-calc-toggle, .calc-panel-overlay, .calc-buttons, .btn-calc, .btn-calc-key, .calc-display, .calc-keypad, .result-display, .mod-selector-overlay, #btn-clear-result').forEach(element => element.remove());
+            document.querySelectorAll('button').forEach(button => {
+                if (button.textContent.trim() === '電卓') button.remove();
+            });
+
             const savedKey = localStorage.getItem('page_ocr_api_key');
             if (savedKey) {
                 document.getElementById('api-key').value = savedKey;
@@ -708,7 +561,6 @@
 
             document.getElementById('shutter-trigger').addEventListener('click', captureAndScan);
             document.getElementById('btn-clear-slots').addEventListener('click', clearSlotsOnly);
-            document.getElementById('btn-clear-result').addEventListener('click', clearResultOnly);
             document.getElementById('btn-goto-scan').addEventListener('click', () => {
                 const key = document.getElementById('api-key').value.trim();
                 if (!key) { alert('PASSを入力してください'); return; }
@@ -948,10 +800,7 @@
                 }
             });
 
-            if (newKanji.size === 1) {
-                const [kanji] = newKanji;
-                document.getElementById('calc-result').innerText = KANJI_DICTIONARY[kanji];
-            }
+
         }
 
         window.addKanjiToSlot = function(kanji) {
@@ -970,93 +819,11 @@
             }
         }
 
-        window.calculate = function(type) {
-            let allPages = [];
-            for (let i = 0; i < 4; i++) {
-                const pVal = parseInt(outputs[i].innerText);
-                if (!isNaN(pVal)) allPages.push(pVal);
-            }
-
-            if (type === 'double') {
-                if (allPages.length === 0) { document.getElementById('calc-result').innerText = "ERR"; return; }
-                const maxNum = Math.max(...allPages);
-                document.getElementById('calc-result').innerText = maxNum * 2;
-                clearAllSelections();
-                return;
-            }
-
-            if (type === 'sort_digits') {
-                if (allPages.length === 0) { document.getElementById('calc-result').innerText = "ERR"; return; }
-                allPages.sort((a, b) => b - a);
-                let combinedResult = "";
-                allPages.forEach(p => { combinedResult += (p % 10).toString(); });
-                document.getElementById('calc-result').innerText = combinedResult;
-                clearAllSelections();
-                return;
-            }
-
-            if (type === 'sub') {
-                if (allPages.length < 1) { document.getElementById('calc-result').innerText = "ERR"; return; }
-                const maxNum = Math.max(...allPages);
-                const minNum = Math.min(...allPages);
-                document.getElementById('calc-result').innerText = maxNum - minNum;
-                clearAllSelections();
-                return;
-            }
-
-            if (type === 'rem') {
-                if (allPages.length === 0) { alert("数値がありません"); return; }
-                document.getElementById('mod-overlay').style.display = 'flex';
-                return;
-            }
-
-            let pages = [];
-            selectedSlots.forEach(idx => {
-                const pVal = parseInt(outputs[idx].innerText);
-                if (!isNaN(pVal)) pages.push(pVal);
-            });
-
-            if (pages.length === 0 && type === 'add') pages = [...allPages];
-            if (pages.length === 0) { document.getElementById('calc-result').innerText = "ERR"; return; }
-
-            let result = 0;
-            if (type === 'add') result = pages.reduce((a, b) => a + b, 0);
-
-            document.getElementById('calc-result').innerText = result;
-            clearAllSelections();
-        }
-
-        window.execModCalculated = function(divisor) {
-            let allPages = [];
-            for (let i = 0; i < 4; i++) {
-                const pVal = parseInt(outputs[i].innerText);
-                if (!isNaN(pVal)) allPages.push(pVal);
-            }
-            if (allPages.length === 0) { closeModOverlay(); return; }
-
-            const maxPage = Math.max(...allPages);
-            document.getElementById('calc-result').innerText = maxPage % divisor;
-            closeModOverlay();
-            clearAllSelections();
-        }
-
-        window.closeModOverlay = function() {
-            document.getElementById('mod-overlay').style.display = 'none';
-        }
-
         function clearSlotsOnly() {
             displays.forEach(disp => disp.innerText = "-");
             outputs.forEach(out => out.innerText = "---");
             clearAllSelections();
-
         }
-
-        function clearResultOnly() {
-            document.getElementById('calc-result').innerText = "000";
-            closeModOverlay();
-        }
-
-        /* --- 電卓機能 --- */
     </script>
 </body>
 </html>
